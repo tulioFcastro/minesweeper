@@ -14,21 +14,19 @@
 
 <script lang="ts">
 import { Field } from "@/models/Field";
-import { Component, Prop, Vue } from "vue-property-decorator";
-import { mapActions, mapState } from "vuex";
+import Component from "vue-class-component";
+import { Prop, Vue } from "vue-property-decorator";
+import { State, Action } from "vuex-class";
 
-@Component({
-  computed: { ...mapState(["gameOver"]) },
-  methods: {
-    ...mapActions(["click"])
-  }
-})
-export default class SlotButton extends Vue {
+@Component({})
+export default class FieldComponent extends Vue {
   @Prop() private rowPosition!: number;
   @Prop() private columnPosition!: number;
   @Prop() private field!: Field;
 
-  gameOver!: boolean;
+  // eslint-disable-next-line
+  @Action click!: any;
+  @State gameOver!: boolean;
 
   get displayedValue(): string {
     return `${this.field.getMinesAround() || ""}`;

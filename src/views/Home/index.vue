@@ -10,7 +10,7 @@
       <p v-else class="emoji">&#128512;</p>
     </div>
     <div class="row" v-for="(row, i) in board" :key="`row-${i}`">
-      <slot-button
+      <field-component
         v-for="(col, j) in row"
         :key="`col-${j}`"
         :field="col"
@@ -18,26 +18,30 @@
         :column-position="j"
       />
     </div>
-    <p v-if="wonTheGame">Congratulations, you won the game.</p>
+    <p v-if="gameOver">Too bad, you lost the game.</p>
+    <p v-else-if="wonTheGame">Congratulations, you won the game.</p>
   </div>
 </template>
 
 <script lang="ts">
-import { Component, Vue } from "vue-property-decorator";
-import SlotButton from "./components/SlotButton.vue";
-import { mapActions, mapGetters, mapState } from "vuex";
+import FieldComponent from "./components/FieldComponent.vue";
+import { Vue } from "vue-property-decorator";
+import Component from "vue-class-component";
+import { State, Getter, Action } from "vuex-class";
+import { Field } from "@/models/Field";
 
 @Component({
-  components: { SlotButton },
-  computed: {
-    ...mapState(["board", "gameOver"]),
-    ...mapGetters(["wonTheGame"])
-  },
-  methods: {
-    ...mapActions(["init"])
-  }
+  components: { FieldComponent }
 })
 export default class Home extends Vue {
+  @State board!: Field[][];
+  @State gameOver!: boolean;
+
+  // eslint-disable-next-line
+  @Action init!: any;
+
+  @Getter wonTheGame!: boolean;
+
   created() {
     this.init();
   }
