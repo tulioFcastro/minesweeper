@@ -1,7 +1,7 @@
 export class Field {
   private minesAround: number;
   private open: boolean;
-  mine: boolean;
+  private mine: boolean;
 
   constructor() {
     this.minesAround = 0;

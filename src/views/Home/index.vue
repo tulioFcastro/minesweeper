@@ -1,10 +1,10 @@
 <template>
   <div class="home">
     <div>
-      <p v-if="died" class="emoji cursor" @click="clearBoard">
+      <p v-if="died" class="emoji cursor" @click="init">
         &#128531;
       </p>
-      <p v-else-if="wonTheGame" @click="clearBoard" class="emoji cursor">
+      <p v-else-if="wonTheGame" @click="init" class="emoji cursor">
         &#128526;
       </p>
       <p v-else class="emoji">&#128512;</p>
@@ -18,7 +18,7 @@
         :column-position="j"
       />
     </div>
-    <button @click="clearBoard">Restart game</button>
+    <button @click="init">Restart game</button>
   </div>
 </template>
 
@@ -38,16 +38,8 @@ import { mapActions, mapGetters, mapState } from "vuex";
   }
 })
 export default class Home extends Vue {
-  clearBoard() {
-    this.init({
-      rowsLength: 10,
-      columnsLength: 10,
-      minesLength: 10
-    });
-  }
-
   created() {
-    this.clearBoard();
+    this.init();
   }
 }
 </script>

@@ -45,13 +45,13 @@ export default new Vuex.Store({
     }
   },
   actions: {
-    init({ commit }, { rowsLength, columnsLength, minesLength }) {
-      let board = generateEmptyBoard(rowsLength, columnsLength);
+    init({rootState, commit }) {
+      let board = generateEmptyBoard(rootState.rowsLength, rootState.columnsLength);
 
       const minesPositions = generateMinesPositions(
-        minesLength,
-        rowsLength,
-        columnsLength
+        rootState.minesLength,
+        rootState.rowsLength,
+        rootState.columnsLength
       );
 
       board = convertMines(minesPositions, board);
