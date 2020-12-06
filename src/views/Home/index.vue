@@ -1,7 +1,7 @@
 <template>
   <div class="home">
     <div>
-      <p v-if="died" class="emoji cursor" @click="init">
+      <p v-if="gameOver" class="emoji cursor" @click="init">
         &#128531;
       </p>
       <p v-else-if="wonTheGame" @click="init" class="emoji cursor">
@@ -30,7 +30,7 @@ import { mapActions, mapGetters, mapState } from "vuex";
 @Component({
   components: { SlotButton },
   computed: {
-    ...mapState(["board", "died"]),
+    ...mapState(["board", "gameOver"]),
     ...mapGetters(["wonTheGame"])
   },
   methods: {

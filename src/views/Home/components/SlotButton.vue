@@ -18,7 +18,7 @@ import { Component, Prop, Vue } from "vue-property-decorator";
 import { mapActions, mapState } from "vuex";
 
 @Component({
-  computed: { ...mapState(["died"]) },
+  computed: { ...mapState(["gameOver"]) },
   methods: {
     ...mapActions(["click"])
   }
@@ -28,14 +28,14 @@ export default class SlotButton extends Vue {
   @Prop() private columnPosition!: number;
   @Prop() private field!: Field;
 
-  died!: boolean;
+  gameOver!: boolean;
 
   get displayedValue(): string {
     return `${this.field.getMinesAround() || ""}`;
   }
 
   get hasCursor(): boolean {
-    return !this.died && !this.field.isOpen();
+    return !this.gameOver && !this.field.isOpen();
   }
 
   get numberStyle() {
@@ -52,7 +52,7 @@ export default class SlotButton extends Vue {
   }
 
   clicked(): void {
-    if (!this.died) {
+    if (!this.gameOver) {
       this.click({
         rowPosition: this.rowPosition,
         colPosition: this.columnPosition

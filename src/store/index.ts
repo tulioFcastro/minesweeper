@@ -17,7 +17,7 @@ export default new Vuex.Store({
     columnsLength: 10,
     minesLength: 10,
     board: [],
-    died: false
+    gameOver: false
   },
   mutations: {
     setRowsLength(state, rowsLength) {
@@ -32,8 +32,8 @@ export default new Vuex.Store({
     setBoard(state, board) {
       Vue.set(state, "board", board);
     },
-    setDied(state, died) {
-      Vue.set(state, "died", died);
+    setGameOver(state, gameOver) {
+      Vue.set(state, "gameOver", gameOver);
     },
 
     showAllFields(state) {
@@ -57,13 +57,13 @@ export default new Vuex.Store({
       board = convertMines(minesPositions, board);
       board = updateBoardNumbers(board);
       commit("setBoard", board);
-      commit("setDied", false);
+      commit("setGameOver", false);
     },
     click({ rootState, commit }, { rowPosition, colPosition }) {
       rootState.board[rowPosition][colPosition].show();
 
       if (rootState.board[rowPosition][colPosition].isMine()) {
-        commit("setDied", true);
+        commit("setGameOver", true);
         commit("showAllFields");
         return;
       }
