@@ -13,25 +13,25 @@
 </template>
 
 <script lang="ts">
-import { Field } from '@/models/Field';
-import { Component, Prop, Vue } from 'vue-property-decorator';
-import { mapActions, mapState } from 'vuex';
+import { Field } from "@/models/Field";
+import { Component, Prop, Vue } from "vue-property-decorator";
+import { mapActions, mapState } from "vuex";
 
 @Component({
-  computed: {
-    ...mapState(['died']),
-  },
+  computed: { ...mapState(["died"]) },
   methods: {
-    ...mapActions(['click']),
-  },
+    ...mapActions(["click"])
+  }
 })
 export default class SlotButton extends Vue {
   @Prop() private rowPosition!: number;
   @Prop() private columnPosition!: number;
   @Prop() private field!: Field;
 
+  died!: boolean;
+
   get displayedValue(): string {
-    return `${this.field.getValue() || ''}`;
+    return `${this.field.getValue() || ""}`;
   }
 
   get hasCursor(): boolean {
@@ -40,12 +40,12 @@ export default class SlotButton extends Vue {
 
   get numberStyle() {
     switch (this.displayedValue) {
-      case '1':
-        return { color: 'blue' };
-      case '2':
-        return { color: 'green' };
-      case '3':
-        return { color: 'red' };
+      case "1":
+        return { color: "blue" };
+      case "2":
+        return { color: "green" };
+      case "3":
+        return { color: "red" };
       default:
         return {};
     }
@@ -55,7 +55,7 @@ export default class SlotButton extends Vue {
     if (!this.died) {
       this.click({
         rowPosition: this.rowPosition,
-        colPosition: this.columnPosition,
+        colPosition: this.columnPosition
       });
     }
   }
