@@ -37,16 +37,17 @@ export default new Vuex.Store({
     },
 
     showAllFields(state) {
-      for (let i = 0; i < state.board.length; i++) {
-        for (let j = 0; j < state.board[i].length; j++) {
-          state.board[i][j].show();
-        }
-      }
+      state.board.forEach((row: Field[]) => {
+        row.forEach(field => field.show());
+      });
     }
   },
   actions: {
-    init({rootState, commit }) {
-      let board = generateEmptyBoard(rootState.rowsLength, rootState.columnsLength);
+    init({ rootState, commit }) {
+      let board = generateEmptyBoard(
+        rootState.rowsLength,
+        rootState.columnsLength
+      );
 
       const minesPositions = generateMinesPositions(
         rootState.minesLength,
@@ -60,24 +61,27 @@ export default new Vuex.Store({
       commit("setGameOver", false);
     },
     click({ rootState, commit }, { rowPosition, colPosition }) {
-      rootState.board[rowPosition][colPosition].show();
+      const field: Field = rootState.board[rowPosition][colPosition];
+      field.show();
 
-      if (rootState.board[rowPosition][colPosition].isMine()) {
+      if (field.isMine()) {
         commit("setGameOver", true);
         commit("showAllFields");
         return;
       }
-      if (rootState.board[rowPosition][colPosition].getMinesAround() === 0) {
+      if (field.getMinesAround() === 0) {
         clearSlot(rootState.board, rowPosition, colPosition);
       }
     }
   },
   getters: {
     wonTheGame: state => {
-      let fields: Field[] = [];
-      state.board.filter(row => {
-        fields = [...fields, ...row];
+      const fields: Field[] = [];
+
+      state.board.forEach((row: Field[]) => {
+        row.forEach(col => fields.push(col));
       });
+
       const withoutMine = fields.filter(field => !field.isMine());
 
       return (

@@ -18,12 +18,13 @@
         :column-position="j"
       />
     </div>
+    <p v-if="wonTheGame">Congratulations, you won the game.</p>
   </div>
 </template>
 
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
-import SlotButton from "./components/SlotButton";
+import SlotButton from "./components/SlotButton.vue";
 import { mapActions, mapGetters, mapState } from "vuex";
 
 @Component({
