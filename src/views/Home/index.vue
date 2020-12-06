@@ -18,7 +18,6 @@
         :column-position="j"
       />
     </div>
-    <button @click="init">Restart game</button>
   </div>
 </template>
 

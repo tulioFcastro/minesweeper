@@ -132,11 +132,3 @@ const clearAround = (board: Field[][], aroundPositions: number[][]) => {
     }
   }
 };
-
-// export default {
-// 	clearSlot,
-// 	updateBoardNumbers,
-// 	convertMines,
-// 	generateMinesPositions,
-// 	generateEmptyBoard,
-// };
