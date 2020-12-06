@@ -1,7 +1,7 @@
 import { Field } from "@/models/Field";
 import {
   clearSlot,
-  updateBoardNumbers,
+  updateMinesAround,
   convertMines,
   generateMinesPositions,
   generateEmptyBoard
@@ -56,12 +56,11 @@ export default new Vuex.Store({
       );
 
       board = convertMines(minesPositions, board);
-      board = updateBoardNumbers(board);
+      board = updateMinesAround(board);
       commit("setBoard", board);
       commit("setGameOver", false);
     },
-    click({ rootState, commit }, { rowPosition, colPosition }) {
-      const field: Field = rootState.board[rowPosition][colPosition];
+    click({ rootState, commit }, field: Field) {
       field.show();
 
       if (field.isMine()) {
@@ -70,7 +69,7 @@ export default new Vuex.Store({
         return;
       }
       if (field.getMinesAround() === 0) {
-        clearSlot(rootState.board, rowPosition, colPosition);
+        clearSlot(rootState.board, field);
       }
     }
   },

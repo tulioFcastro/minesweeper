@@ -2,11 +2,15 @@ export class Field {
   private minesAround: number;
   private open: boolean;
   private mine: boolean;
+  rowPosition: number;
+  colPosition: number;
 
-  constructor() {
+  constructor(rowPosition: number, colPosition: number) {
     this.minesAround = 0;
     this.open = false;
     this.mine = false;
+    this.rowPosition = rowPosition;
+    this.colPosition = colPosition;
   }
 
   show(): void {

@@ -10,13 +10,7 @@
       <p v-else class="emoji">&#128512;</p>
     </div>
     <div class="row" v-for="(row, i) in board" :key="`row-${i}`">
-      <field-component
-        v-for="(col, j) in row"
-        :key="`col-${j}`"
-        :field="col"
-        :row-position="i"
-        :column-position="j"
-      />
+      <field-component v-for="(col, j) in row" :key="`col-${j}`" :field="col" />
     </div>
     <p v-if="gameOver">Too bad, you lost the game.</p>
     <p v-else-if="wonTheGame">Congratulations, you won the game.</p>

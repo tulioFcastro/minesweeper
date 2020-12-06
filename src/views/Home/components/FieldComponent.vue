@@ -20,8 +20,6 @@ import { State, Action } from "vuex-class";
 
 @Component({})
 export default class FieldComponent extends Vue {
-  @Prop() private rowPosition!: number;
-  @Prop() private columnPosition!: number;
   @Prop() private field!: Field;
 
   // eslint-disable-next-line
@@ -51,10 +49,7 @@ export default class FieldComponent extends Vue {
 
   clicked(): void {
     if (!this.gameOver) {
-      this.click({
-        rowPosition: this.rowPosition,
-        colPosition: this.columnPosition
-      });
+      this.click(this.field);
     }
   }
 }
