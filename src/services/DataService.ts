@@ -99,7 +99,7 @@ export function updateBoardNumbers(board: Field[][]) {
 
       for (let i = 0; i < aroundPositions.length; i++) {
         if (board[aroundPositions[i][0]][aroundPositions[i][1]].isMine()) {
-          board[rowPosition][colPosition].increaseValue();
+          board[rowPosition][colPosition].increaseMinesAround();
         }
       }
     }
@@ -114,7 +114,6 @@ export function clearSlot(
   colPosition: number
 ) {
   board[rowPosition][colPosition].show();
-  board[rowPosition][colPosition].unlock();
 
   const aroundPositions = getAroundPositions(board, rowPosition, colPosition);
 
@@ -125,7 +124,8 @@ export function clearSlot(
 const clearAround = (board: Field[][], aroundPositions: number[][]) => {
   for (let i = 0; i < aroundPositions.length; i++) {
     if (
-      board[aroundPositions[i][0]][aroundPositions[i][1]].getValue() === 0 &&
+      board[aroundPositions[i][0]][aroundPositions[i][1]].getMinesAround() ===
+        0 &&
       !board[aroundPositions[i][0]][aroundPositions[i][1]].isOpen()
     ) {
       clearSlot(board, aroundPositions[i][0], aroundPositions[i][1]);

@@ -40,7 +40,6 @@ export default new Vuex.Store({
       for (let i = 0; i < state.board.length; i++) {
         for (let j = 0; j < state.board[i].length; j++) {
           state.board[i][j].show();
-          state.board[i][j].unlock();
         }
       }
     }
@@ -62,14 +61,13 @@ export default new Vuex.Store({
     },
     click({ rootState, commit }, { rowPosition, colPosition }) {
       rootState.board[rowPosition][colPosition].show();
-      rootState.board[rowPosition][colPosition].unlock();
 
       if (rootState.board[rowPosition][colPosition].isMine()) {
         commit("setDied", true);
         commit("showAllFields");
         return;
       }
-      if (rootState.board[rowPosition][colPosition].getValue() === 0) {
+      if (rootState.board[rowPosition][colPosition].getMinesAround() === 0) {
         clearSlot(rootState.board, rowPosition, colPosition);
       }
     }

@@ -31,7 +31,7 @@ export default class SlotButton extends Vue {
   died!: boolean;
 
   get displayedValue(): string {
-    return `${this.field.getValue() || ""}`;
+    return `${this.field.getMinesAround() || ""}`;
   }
 
   get hasCursor(): boolean {

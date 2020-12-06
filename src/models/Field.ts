@@ -1,41 +1,37 @@
 export class Field {
-  value: number;
+  private minesAround: number;
   private open: boolean;
-  blocked: boolean;
+  mine: boolean;
 
   constructor() {
-    this.value = 0;
+    this.minesAround = 0;
     this.open = false;
-    this.blocked = false;
+    this.mine = false;
   }
 
   show(): void {
     this.open = true;
   }
 
-  unlock(): void {
-    this.blocked = true;
-  }
-
   isMine(): boolean {
-    return this.value === null || this.value === undefined;
+    return this.mine;
   }
 
   turnMine(): void {
-    this.value = null;
+    this.mine = true;
   }
 
   isOpen(): boolean {
     return this.open;
   }
 
-  getValue(): number {
-    return this.value;
+  getMinesAround(): number {
+    return this.minesAround;
   }
 
-  increaseValue(): void {
+  increaseMinesAround(): void {
     if (!this.isMine()) {
-      this.value++;
+      this.minesAround++;
     }
   }
 }
