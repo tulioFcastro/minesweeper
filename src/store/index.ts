@@ -1,6 +1,13 @@
+import { Field } from '@/models/Field';
+import {
+	clearSlot,
+	updateBoardNumbers,
+	convertMines,
+	generateMinesPositions,
+	generateEmptyBoard,
+} from '@/services/DataService';
 import Vue from 'vue';
 import Vuex from 'vuex';
-import DataService from '@/services/dataService';
 
 Vue.use(Vuex);
 
@@ -10,7 +17,6 @@ export default new Vuex.Store({
 		columnsLength: 10,
 		minesLength: 10,
 		board: [],
-		minesPositions: null,
 		died: false,
 	},
 	mutations: {
@@ -26,70 +32,61 @@ export default new Vuex.Store({
 		setBoard(state, board) {
 			Vue.set(state, 'board', board);
 		},
-		setMinesPositions(state, minesPositions) {
-			Vue.set(state, 'minesPositions', minesPositions);
-		},
 		setDied(state, died) {
 			Vue.set(state, 'died', died);
 		},
 
-		slotClicked(state, { rowPosition, colPosition }) {
-			Vue.set(state.board[rowPosition][colPosition], 'hidden', false);
-			Vue.set(state.board[rowPosition][colPosition], 'blocked', true);
-		},
 		showAllFields(state) {
 			for (let i = 0; i < state.board.length; i++) {
 				for (let j = 0; j < state.board[i].length; j++) {
-					Vue.set(state.board[i][j], 'hidden', false);
-					Vue.set(state.board[i][j], 'blocked', true);
+					state.board[i][j].show();
+					state.board[i][j].unlock();
 				}
 			}
 		},
 	},
 	actions: {
 		init({ commit }, { rowsLength, columnsLength, minesLength }) {
-			let board = DataService.generateEmptyBoard(rowsLength, columnsLength);
-			const minesPositions = DataService.generateMinesPositions(
+			let board = generateEmptyBoard(rowsLength, columnsLength);
+
+			const minesPositions = generateMinesPositions(
 				minesLength,
 				rowsLength,
 				columnsLength
 			);
-			commit('setMinesPositions', minesPositions);
-			board = DataService.insertMines(minesPositions, board);
-			board = DataService.updateBoardNumbers(
-				minesPositions,
-				rowsLength,
-				columnsLength,
-				board
-			);
+			console.log(minesPositions);
+
+			board = convertMines(minesPositions, board);
+			board = updateBoardNumbers(board);
 			commit('setBoard', board);
 			commit('setDied', false);
 		},
 		click({ rootState, commit }, { rowPosition, colPosition }) {
-			commit('slotClicked', { rowPosition, colPosition });
+			rootState.board[rowPosition][colPosition].show();
+			rootState.board[rowPosition][colPosition].unlock();
 
-			if (rootState.board[rowPosition][colPosition].value === null) {
+			if (rootState.board[rowPosition][colPosition].isMine()) {
 				commit('setDied', true);
 				commit('showAllFields');
 				return;
 			}
-			if (rootState.board[rowPosition][colPosition].value === 0) {
-				DataService.clearSlot(rootState.board, rowPosition, colPosition);
+			if (rootState.board[rowPosition][colPosition].getValue() === 0) {
+				clearSlot(rootState.board, rowPosition, colPosition);
 			}
 		},
 	},
 	getters: {
 		wonTheGame: (state) => {
-			let cells = [];
+			let fields: Field[] = [];
 			state.board.filter((row) => {
-				cells = [...cells, ...row];
+				fields = [...fields, ...row];
 			});
-			const withoutBomb = cells.filter((cell) => cell.value > 0);
+			const withoutMine = fields.filter((field) => !field.isMine());
 
 			return (
-				withoutBomb.filter((cell) => !cell.hidden).length === withoutBomb.length
+				withoutMine.filter((field) => field.isOpen()).length ===
+				withoutMine.length
 			);
-			// ((row) => row.map((col) => col));
 		},
 	},
 });

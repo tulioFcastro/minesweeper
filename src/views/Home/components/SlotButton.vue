@@ -1,7 +1,7 @@
 <template>
   <div class="cell" @click="clicked" :class="{ cursor: hasCursor }">
-    <template v-if="!data.hidden">
-      <div v-if="data.value === null">
+    <template v-if="field.isOpen()">
+      <div v-if="field.isMine()">
         <p style="font-size:20px">&#x1F4A3;</p>
       </div>
       <div v-else :style="numberStyle">
@@ -13,49 +13,52 @@
 </template>
 
 <script lang="ts">
+import { Field } from '@/models/Field';
 import { Component, Prop, Vue } from 'vue-property-decorator';
 import { mapActions, mapState } from 'vuex';
 
 @Component({
   computed: {
     ...mapState(['died']),
-    numberStyle() {
-      switch (this.displayedValue) {
-        case 1:
-          return { color: 'blue' };
-        case 2:
-          return { color: 'green' };
-        case 3:
-          return { color: 'red' };
-        default:
-          break;
-      }
-    },
-    hasCursor() {
-      return !this.died && this.data.hidden;
-    },
-    displayedValue() {
-      if (this.data.hidden) return '';
-
-      return this.data.value || '';
-    },
   },
   methods: {
     ...mapActions(['click']),
-    clicked() {
-      if (!this.died) {
-        this.click({
-          rowPosition: this.rowPosition,
-          colPosition: this.columnPosition,
-        });
-      }
-    },
   },
 })
 export default class SlotButton extends Vue {
   @Prop() private rowPosition!: number;
   @Prop() private columnPosition!: number;
-  @Prop() private data!: object;
+  @Prop() private field!: Field;
+
+  get displayedValue(): string {
+    return `${this.field.getValue() || ''}`;
+  }
+
+  get hasCursor(): boolean {
+    return !this.died && !this.field.isOpen();
+  }
+
+  get numberStyle() {
+    switch (this.displayedValue) {
+      case '1':
+        return { color: 'blue' };
+      case '2':
+        return { color: 'green' };
+      case '3':
+        return { color: 'red' };
+      default:
+        return {};
+    }
+  }
+
+  clicked(): void {
+    if (!this.died) {
+      this.click({
+        rowPosition: this.rowPosition,
+        colPosition: this.columnPosition,
+      });
+    }
+  }
 }
 </script>
 <style lang="scss" scoped>
