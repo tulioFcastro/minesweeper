@@ -14,6 +14,10 @@
     </div>
     <p v-if="gameOver">Too bad, you lost the game.</p>
     <p v-else-if="wonTheGame">Congratulations, you won the game.</p>
+    <button @click="test">test</button>
+    <input v-model="rows" />
+    <input v-model="cols" />
+    <input v-model="mines" />
   </div>
 </template>
 
@@ -21,7 +25,7 @@
 import FieldComponent from "./components/FieldComponent.vue";
 import { Vue } from "vue-property-decorator";
 import Component from "vue-class-component";
-import { State, Getter, Action } from "vuex-class";
+import { State, Getter, Action, Mutation } from "vuex-class";
 import { Field } from "@/models/Field";
 
 @Component({
@@ -35,8 +39,26 @@ export default class Home extends Vue {
   @Action init!: any;
 
   @Getter wonTheGame!: boolean;
+  // eslint-disable-next-line
+  @Mutation setRowsLength!: any;
+  // eslint-disable-next-line
+  @Mutation setColumnsLength!: any;
+  // eslint-disable-next-line
+  @Mutation setMinesLength!: any;
+
+  rows = 10;
+  cols = 10;
+  mines = 5;
 
   created() {
+    this.init();
+  }
+
+  test() {
+    this.setRowsLength(this.rows);
+    this.setColumnsLength(this.cols);
+    this.setMinesLength(this.mines);
+
     this.init();
   }
 }

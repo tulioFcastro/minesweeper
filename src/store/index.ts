@@ -15,7 +15,7 @@ export default new Vuex.Store({
   state: {
     rowsLength: 10,
     columnsLength: 10,
-    minesLength: 10,
+    minesLength: 1,
     board: [],
     gameOver: false
   },

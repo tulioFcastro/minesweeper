@@ -16,7 +16,7 @@
 import { Field } from "@/models/Field";
 import Component from "vue-class-component";
 import { Prop, Vue } from "vue-property-decorator";
-import { State, Action } from "vuex-class";
+import { State, Action, Getter } from "vuex-class";
 
 @Component({})
 export default class FieldComponent extends Vue {
@@ -25,13 +25,14 @@ export default class FieldComponent extends Vue {
   // eslint-disable-next-line
   @Action click!: any;
   @State gameOver!: boolean;
+  @Getter wonTheGame!: boolean;
 
   get displayedValue(): string {
     return `${this.field.getMinesAround() || ""}`;
   }
 
   get hasCursor(): boolean {
-    return !this.gameOver && !this.field.isOpen();
+    return !this.wonTheGame && !this.gameOver && !this.field.isOpen();
   }
 
   get numberStyle() {
@@ -48,7 +49,7 @@ export default class FieldComponent extends Vue {
   }
 
   clicked(): void {
-    if (!this.gameOver) {
+    if (!this.wonTheGame && !this.gameOver) {
       this.click(this.field);
     }
   }
