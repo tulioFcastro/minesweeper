@@ -13,11 +13,18 @@
       <field-component v-for="(col, j) in row" :key="`col-${j}`" :field="col" />
     </div>
     <p v-if="gameOver">Too bad, you lost the game.</p>
-    <p v-else-if="wonTheGame">Congratulations, you won the game.</p>
-    <button @click="test">test</button>
-    <input v-model="rows" />
-    <input v-model="cols" />
-    <input v-model="mines" />
+    <p v-else-if="wonTheGame" style="margin: 16px auto;">
+      Congratulations, you won the game.
+    </p>
+    <div class="change-data">
+      <label for="rows">Rows</label>
+      <input id="rows" v-model="rows" />
+      <label for="cols">Cols</label>
+      <input id="cols" v-model="cols" />
+      <label for="mines">Mines</label>
+      <input id="mines" v-model="mines" />
+      <button @click="test">test</button>
+    </div>
   </div>
 </template>
 
@@ -69,9 +76,12 @@ export default class Home extends Vue {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
+  flex-direction: column;
 }
 .emoji {
   font-size: 30px;
+  display: flex;
+  justify-content: center;
 }
 .cursor {
   cursor: pointer;
@@ -80,5 +90,12 @@ export default class Home extends Vue {
   display: flex;
   width: 100%;
   justify-content: center;
+}
+
+.change-data {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  max-width: 200px;
 }
 </style>
