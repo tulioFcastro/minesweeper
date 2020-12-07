@@ -100,15 +100,11 @@ export function clearSlot(board: Field[][], field: Field) {
 
   const aroundPositions = getAroundPositions(board, field);
 
-  /* eslint-disable-next-line */
-	clearAround(board, aroundPositions);
-}
-
-const clearAround = (board: Field[][], aroundPositions: number[][]) => {
   for (let i = 0; i < aroundPositions.length; i++) {
-    const field: Field = board[aroundPositions[i][0]][aroundPositions[i][1]];
-    if (field.getMinesAround() === 0 && !field.isOpen()) {
-      clearSlot(board, field);
+    const targetField: Field =
+      board[aroundPositions[i][0]][aroundPositions[i][1]];
+    if (targetField.getMinesAround() === 0 && !targetField.isOpen()) {
+      clearSlot(board, targetField);
     }
   }
-};
+}
