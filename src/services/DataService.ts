@@ -1,11 +1,14 @@
 import { Field } from "@/models/Field";
 
-const getRandomValue = (max: number) => {
+const getRandomValue = (max: number): number => {
   return Math.floor(Math.random() * max);
 };
 
-export function generateEmptyBoard(rowsLength: number, columnsLength: number) {
-  const board = [];
+export function generateEmptyBoard(
+  rowsLength: number,
+  columnsLength: number
+): Field[][] {
+  const board: Field[][] = [];
   for (let i = 0; i < rowsLength; i++) {
     const row = [];
     for (let j = 0; j < columnsLength; j++) {
@@ -21,7 +24,7 @@ export function generateMinesPositions(
   minesLength: number,
   rowsLength: number,
   columnsLength: number
-) {
+): number[][] {
   const minesPositions: number[][] = [];
 
   while (minesPositions.length < minesLength) {
@@ -35,7 +38,10 @@ export function generateMinesPositions(
   return minesPositions;
 }
 
-export function convertMines(minesPositions: number[][], board: Field[][]) {
+export function convertMines(
+  minesPositions: number[][],
+  board: Field[][]
+): Field[][] {
   for (let i = 0; i < minesPositions.length; i++) {
     const row = minesPositions[i][0],
       col = minesPositions[i][1];
@@ -45,47 +51,47 @@ export function convertMines(minesPositions: number[][], board: Field[][]) {
   return board;
 }
 
-const getAroundPositions = (board: Field[][], field: Field) => {
-  const aroundPositions = [];
+const getAroundPositions = (board: Field[][], field: Field): Field[] => {
+  const aroundPositions: Field[] = [];
   // col
   if (field.colPosition - 1 >= 0) {
-    aroundPositions.push([field.rowPosition, field.colPosition - 1]);
+    aroundPositions.push(board[field.rowPosition][field.colPosition - 1]);
   }
   if (field.colPosition + 1 < board[field.rowPosition].length) {
-    aroundPositions.push([field.rowPosition, field.colPosition + 1]);
+    aroundPositions.push(board[field.rowPosition][field.colPosition + 1]);
   }
 
   // row - before
   if (field.rowPosition - 1 >= 0) {
-    aroundPositions.push([field.rowPosition - 1, field.colPosition]);
+    aroundPositions.push(board[field.rowPosition - 1][field.colPosition]);
     if (field.colPosition - 1 >= 0) {
-      aroundPositions.push([field.rowPosition - 1, field.colPosition - 1]);
+      aroundPositions.push(board[field.rowPosition - 1][field.colPosition - 1]);
     }
     if (field.colPosition + 1 < board[field.rowPosition].length) {
-      aroundPositions.push([field.rowPosition - 1, field.colPosition + 1]);
+      aroundPositions.push(board[field.rowPosition - 1][field.colPosition + 1]);
     }
   }
 
   // row - after
   if (field.rowPosition + 1 < board.length) {
-    aroundPositions.push([field.rowPosition + 1, field.colPosition]);
+    aroundPositions.push(board[field.rowPosition + 1][field.colPosition]);
     if (field.colPosition - 1 >= 0) {
-      aroundPositions.push([field.rowPosition + 1, field.colPosition - 1]);
+      aroundPositions.push(board[field.rowPosition + 1][field.colPosition - 1]);
     }
     if (field.colPosition + 1 < board[field.rowPosition].length) {
-      aroundPositions.push([field.rowPosition + 1, field.colPosition + 1]);
+      aroundPositions.push(board[field.rowPosition + 1][field.colPosition + 1]);
     }
   }
 
   return aroundPositions;
 };
 
-export function updateMinesAround(board: Field[][]) {
+export function updateMinesAround(board: Field[][]): Field[][] {
   board.forEach((row: Field[]) => {
     row.forEach(field => {
       const aroundPositions = getAroundPositions(board, field);
       for (let i = 0; i < aroundPositions.length; i++) {
-        if (board[aroundPositions[i][0]][aroundPositions[i][1]].isMine()) {
+        if (aroundPositions[i].isMine()) {
           field.increaseMinesAround();
         }
       }
@@ -95,16 +101,17 @@ export function updateMinesAround(board: Field[][]) {
   return board;
 }
 
-export function clearSlot(board: Field[][], field: Field) {
+export function clearSlot(board: Field[][], field: Field): void {
   field.show();
 
   const aroundPositions = getAroundPositions(board, field);
 
   for (let i = 0; i < aroundPositions.length; i++) {
-    const targetField: Field =
-      board[aroundPositions[i][0]][aroundPositions[i][1]];
-    if (targetField.getMinesAround() === 0 && !targetField.isOpen()) {
-      clearSlot(board, targetField);
+    if (
+      aroundPositions[i].getMinesAround() === 0 &&
+      !aroundPositions[i].isOpen()
+    ) {
+      clearSlot(board, aroundPositions[i]);
     }
   }
 }
