@@ -106,12 +106,9 @@ export function clearSlot(board: Field[][], field: Field): void {
 
   const aroundPositions = getAroundPositions(board, field);
 
-  for (let i = 0; i < aroundPositions.length; i++) {
-    if (
-      aroundPositions[i].getMinesAround() === 0 &&
-      !aroundPositions[i].isOpen()
-    ) {
-      clearSlot(board, aroundPositions[i]);
+  aroundPositions.forEach(field => {
+    if (field.getMinesAround() === 0 && !field.isOpen()) {
+      clearSlot(board, field);
     }
-  }
+  });
 }
