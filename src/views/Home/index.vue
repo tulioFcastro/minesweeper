@@ -12,8 +12,8 @@
     <div class="row" v-for="(row, i) in board" :key="`row-${i}`">
       <field-component v-for="(col, j) in row" :key="`col-${j}`" :field="col" />
     </div>
-    <p v-if="gameOver">Too bad, you lost the game.</p>
-    <p v-else-if="wonTheGame" style="margin: 16px auto;">
+    <p v-if="gameOver" class="message">Too bad, you lost the game.</p>
+    <p v-else-if="wonTheGame" class="message">
       Congratulations, you won the game.
     </p>
     <div class="change-data">
@@ -90,6 +90,10 @@ export default class Home extends Vue {
   display: flex;
   width: 100%;
   justify-content: center;
+}
+
+.message {
+  margin: 16px auto;
 }
 
 .change-data {
