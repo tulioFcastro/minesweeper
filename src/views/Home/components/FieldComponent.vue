@@ -1,9 +1,7 @@
 <template>
   <div class="cell" @click="clicked" :class="{ cursor: hasCursor }">
     <template v-if="field.isOpen()">
-      <div v-if="field.isMine()">
-        <p style="font-size:20px">&#x1F4A3;</p>
-      </div>
+      <p v-if="field.isMine()" style="font-size:20px">&#x1F4A3;</p>
       <div v-else :style="numberStyle">
         <b>{{ displayedValue }}</b>
       </div>

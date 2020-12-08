@@ -31,7 +31,9 @@ export function generateMinesPositions(
     const row = getRandomValue(rowsLength),
       col = getRandomValue(columnsLength);
 
-    if (!minesPositions.includes([row, col])) {
+    if (
+      !minesPositions.find(minePos => minePos[0] === row && minePos[1] === col)
+    ) {
       minesPositions.push([row, col]);
     }
   }
